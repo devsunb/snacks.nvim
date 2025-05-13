@@ -155,9 +155,10 @@ function M.visual()
   local pos = vim.api.nvim_buf_get_mark(0, "<")
   local end_pos = vim.api.nvim_buf_get_mark(0, ">")
 
-  -- for some reason, sometimes the column is off by one
-  -- see: https://github.com/folke/snacks.nvim/issues/190
-  local col_to = math.min(end_pos[2] + 1, #vim.api.nvim_buf_get_lines(0, end_pos[1] - 1, end_pos[1], false)[1])
+  local last_line = vim.api.nvim_buf_get_lines(0, end_pos[1] - 1, end_pos[1], false)[1]
+  local col = math.min(end_pos[2] + 1, #last_line)
+  local last_char_len = vim.str_utf_end(last_line, col)
+  local col_to = vim.str_byteindex(last_line, "utf-8", col + last_char_len)
 
   local lines = vim.api.nvim_buf_get_text(0, pos[1] - 1, pos[2], end_pos[1] - 1, col_to, {})
   local text = table.concat(lines, "\n")
