@@ -21,7 +21,7 @@ local environments = {
     name = "wezterm",
     terminal = "wezterm",
     supported = true,
-    placeholders = false,
+    placeholders = true,
   },
   {
     name = "tmux",
